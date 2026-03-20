@@ -1,156 +1,89 @@
 :root {
-  --portal-bg: #0f172a;
-  --accent-glow: #38bdf8;
-  --glass: rgba(255, 255, 255, 0.05);
-  --white: #ffffff;
+  --bg-color: #0f172a;
+  --accent: #38bdf8;
 }
 
 body {
-  background-color: var(--portal-bg);
-  color: var(--white);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  margin: 0;
-  font-family: 'Inter', sans-serif;
-}
-
-.glass-card {
-  background: var(--glass);
-  backdrop-filter: blur(15px);
-  padding: 3rem;
-  border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-  text-align: center;
-  max-width: 400px;
-  width: 90%;
-}
-
-input,
-select {
-  width: 100%;
-  padding: 12px;
-  margin: 10px 0;
-  background: rgba(0, 0, 0, 0.3);
-  border: 1px solid var(--accent-glow);
-  color: white;
-  border-radius: 8px;
-}
-
-button {
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-#init-btn {
-  background: var(--accent-glow);
-  color: var(--portal-bg);
-  border: none;
-  padding: 15px 30px;
-  border-radius: 8px;
-  font-weight: bold;
-  margin-top: 20px;
-}
-
-#subject-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 15px;
-  margin: 20px 0;
-}
-
-.subject-btn {
-  padding: 15px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid var(--accent-glow);
-  color: white;
-  border-radius: 8px;
-}
-
-.logout-btn {
-  background: transparent;
-  border: 1px solid white;
-  color: white;
-  padding: 8px 15px;
-  border-radius: 5px;
-}
-
-.phase-hub {
+    /* We create a large gradient that we will move around */
+    background: linear-gradient(-45deg, #008AFF, #3E3F3F, #000000, #00FFEE);
+    background-size: 400% 400%; /* Make the background much larger than the screen */
+    animation: nebulaMove 15s ease infinite; /* Move it slowly forever */
+    
+    margin: 0;
+    overflow: hidden;
     display: flex;
-    justify-content: space-around;
-    margin: 30px 0;
-}
-
-.phase-item {
-    cursor: pointer;
-    transition: transform 0.3s ease;
-    text-align: center;
-    width: 80px;
-}
-
-.gear {
-    width: 60px;
-    height: 60px;
-    border: 4px dashed var(--accent-glow); /* Mimics the gear teeth */
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
     justify-content: center;
-    font-weight: bold;
-    margin: 0 auto 10px;
-    background: rgba(255, 255, 255, 0.05);
-}
-
-.phase-item:hover .gear, .phase-item.active .gear {
-    border-style: solid;
-    background: var(--accent-glow);
-    color: var(--portal-bg);
-    box-shadow: 0 0 15px var(--accent-glow);
-}
-
-.phase-item span {
-    font-size: 0.8rem;
-    display: block;
-}
-
-#init-btn {
-  background: var(--accent-glow);
-  color: var(--portal-bg);
-  border: none;
-  padding: 15px 30px;
-  border-radius: 8px;
-  font-weight: bold;
-  font-size: 1rem;
-  margin-top: 25px;
-  width: 100%;
-  /* Makes it easy to click on mobile */
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4);
-}
-
-#init-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px var(--accent-glow);
-  filter: brightness(1.1);
-}
-
-#dashboard-screen {
-    position: fixed; /* Ensures it stays on top of the background */
-    top: 0;
-    left: 0;
-    width: 100vw;
+    align-items: center;
     height: 100vh;
-    display: none; /* JS will change this to 'flex' */
-    justify-content: center;
-    align-items: center;
-    z-index: 100;
+    font-family: 'Inter', sans-serif;
 }
 
-/* Ensure the card inside the dashboard is visible */
-#dashboard-screen .glass-card {
-    display: block !important;
-    max-width: 600px;
+/* This creates the "breathing" effect of the background */
+@keyframes nebulaMove {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+#welcome-text {
+    font-size: 4rem;
+    color: var(--accent);
+    font-weight: 600;
+    letter-spacing: 4px; /* Spread the letters for a cleaner look */
+    text-transform: uppercase; /* Makes it feel more official */
+    
+    /* ADD THIS: Text glow effect */
+    text-shadow: 0 0 10px rgba(56, 189, 248, 0.5), 
+                 0 0 20px rgba(56, 189, 248, 0.3);
+    
+    opacity: 0;
+    transform: translateY(40px);
+    text-align: center;
+}
+
+/* --- THE NEW CLASSES --- */
+
+/* Class 1: Pops the text up from the bottom and fades in */
+.animate-pop-in {
+  /* Using your specific cubic-bezier for that perfect pop! */
+  animation: popIn 1s cubic-bezier(0.2, 1, 0.3, 1) forwards;
+}
+
+/* Class 2: Moves the text further up and fades out */
+.animate-slide-out {
+  /* We use a different timing function (ease-in) so it accelerates as it leaves */
+  animation: slideOutUp 1s ease-in forwards;
+}
+
+
+/* --- THE ANIMATION KEYFRAMES --- */
+
+/* Logic: 40px down -> 0px (middle of screen) */
+@keyframes popIn {
+  0% {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0); /* Settle at the middle */
+  }
+}
+
+/* Logic: 0px (middle of screen) -> -60px (above the middle) */
+@keyframes slideOutUp {
+  0% {
+    opacity: 1;
+    transform: translateY(0); /* Start from the middle */
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-60px); /* Move UP and off */
+  }
 }

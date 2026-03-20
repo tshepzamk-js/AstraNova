@@ -1,107 +1,53 @@
-function selectPhase(phaseValue, element) {
-    // 1. Remove 'active' class from all items
-    document.querySelectorAll('.phase-item').forEach(item => {
-        item.classList.remove('active');
+window.onload = () => {
+    const textElement = document.getElementById('welcome-text');
 
-    });
+    // NEW LOGIC: A "relay" sequence for each phrase
+    function runPhraseSequence(newText, startTime) {
+        
+        // Phase 1: Preparation (Fade old text out, reset position off-screen)
+        // We do this instantly, but it is necessary so the text doesn't "flicker"
+        setTimeout(() => {
+            textElement.className = ''; // Remove ALL animation classes
+            textElement.style.opacity = '0'; // Ensure it's hidden
+            textElement.style.transform = 'translateY(40px)'; // Reset to bottom
+        }, startTime);
 
-    // 2. Add 'active' to clicked item
-    element.classList.add('active');
+        // Phase 2: Show "Pop In"
+        // (40px -> 0px)
+        setTimeout(() => {
+            textElement.innerText = newText;
+            textElement.classList.add('animate-pop-in');
+        }, startTime + 500); // Wait 0.5s after resetting
 
-    // 3. Update the hidden input so your existing code still works
-    document.getElementById('grade-list').value = phaseValue;
+        // Phase 3: Show "Slide Out"
+        // (0px -> -60px)
+        setTimeout(() => {
+            // CRITICAL: We remove the 'In' class before adding the 'Out' class
+            // This is like a baton pass.
+            textElement.classList.remove('animate-pop-in');
+            textElement.classList.add('animate-slide-out');
+        }, startTime + 3000); // Happens at 3s mark (gives phrase time to be read)
+    }
+
+    // --- Start the Relay ---
     
-    // Optional: Visual feedback
-    console.log("Phase Selected: " + phaseValue);
-}
+    // Relay 1: "Welcome"
+    // Settle time: 0.5s - 3s
+    runPhraseSequence("Welcome", 0);
 
+    // Relay 2: "Reach for the stars"
+    // This relay STARTS at 4s mark (gives Relays 1 time to complete)
+    // Settle time: 4.5s - 7s
+    runPhraseSequence("Reach for the stars", 4000);
 
-const initBtn = document.getElementById('init-btn');
-const symbols = "ABCDEFGHIJKLMNOPQRSTUVWXYZ#%&*$@+<>[]{}";
-
-// 1. INITIALIZE BUTTON LOGIC
-initBtn.onclick = () => {
-  const name = document.getElementById('user-name').value;
-  const grade = document.getElementById('grade-list').value;
-
-  if (name === "") {
-    alert("Please enter your name, Scholar.");
-    return;
-  }
-
-  // Save to Memory
-  localStorage.setItem('studentName', name);
-  localStorage.setItem('studentGrade', grade);
-
-  launchAcademy(name, grade);
+    // Phase 4: Final Reveal (Fade out the whole mat)
+    // We do this at 8 seconds, once everything is complete.
+    setTimeout(() => {
+        textElement.className = ''; // Quick reset
+        // We fade out the entire Welcome Mat (this part hasn't changed!)
+        document.getElementById('welcome-mat').style.opacity = '0';
+        setTimeout(() => {
+            document.getElementById('welcome-mat').style.display = 'none';
+        }, 1000);
+    }, 8000); 
 };
-
-// 2. NAVIGATION LOGIC
-function launchAcademy(name, grade) {
-  const portal = document.querySelector('portal-container');
-  const dashboard = document.getElementById('dashboard-screen');
-  const welcome = document.getElementById('welcome-msg');
-
-  // 1. Hide the portal
-  portal.style.display = 'none';
-
-  // 2. Show the dashboard and force it to be a flexbox
-  dashboard.style.display = 'flex'; 
-
-  // 3. Run the animation
-  decryptText(welcome, `Scholar: ${name}`);
-  
-  // 4. Load the subjects
-  renderSubjects(grade);
-}
-
-
-  // Swap Screens
-  style.display = 'none';
-  dashboard.style.display = 'flex';
-  dashboard.style.justifyContent = 'center';
-
-  // Trigger Glitch Effect
-  decryptText(welcome, `Scholar: ${name}`);
-  
-  renderSubjects(grade);
-
-// 3. SUBJECT GENERATOR
-function renderSubjects(grade) {
-  const grid = document.getElementById('subject-grid');
-  grid.innerHTML = ""; 
-
-  let subjects = [];
-  if (grade.includes('uni')) {
-    subjects = ["Quantum Mechanics", "Data Structures", "Philosophy", "Neuroscience"];
-  } else if (grade.includes('grade-10') || grade.includes('grade-12')) {
-    subjects = ["Mathematics", "Physics", "History", "Literature"];
-  } else {
-    subjects = ["Reading", "Counting", "Drawing", "Music"];
-  }
-
-  subjects.forEach(sub => {
-    const btn = document.createElement('button');
-    btn.innerText = sub;
-    btn.className = "subject-btn";
-    btn.onclick = () => alert(`Loading ${sub} module...`);
-    grid.appendChild(btn);
-  });
-}
-
-// 4. THE GLITCH ENGINE
-function decryptText(targetElement, finalWord) {
-  let iteration = 0;
-  const interval = setInterval(() => {
-    targetElement.innerText = finalWord
-      .split("")
-      .map((letter, index) => {
-        if (index < iteration) return finalWord[index];
-        return symbols[Math.floor(Math.random() * symbols.length)];
-      })
-      .join("");
-
-    if (iteration >= finalWord.length) clearInterval(interval);
-    iteration += 1 / 3;
-  }, 30);
-}

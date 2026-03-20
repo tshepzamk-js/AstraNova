@@ -1,48 +1,15 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Academic Access Portal</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome Mat Test</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div class="portal-container">
-        <div class="glass-card">
-            <h1 id="portal-title">Academic Access</h1>
-            <p class="subtitle">Enter your credentials to sync the curriculum</p>
-
-            <div class="input-group">
-                <input type="text" id="user-name" placeholder="Full Name" autocomplete="off">
-            </div>
-
-<div class="phase-hub">
-    <div class="phase-item" onclick="selectPhase('foundation', this)">
-        <div class="gear">01</div>
-        <span>Foundation</span>
-    </div>
-    <div class="phase-item" onclick="selectPhase('highschool', this)">
-        <div class="gear">02</div>
-        <span>High School</span>
-    </div>
-    <div class="phase-item" onclick="selectPhase('university', this)">
-        <div class="gear">03</div>
-        <span>University</span>
-    </div>
-</div>
-
-<input type="hidden" id="grade-list" value="">
-
-<button id="init-btn">Initialize Learning</button>
-
-<input type="hidden" id="grade-list" value="">
-
-    <div id="dashboard-screen" style="display:none; width: 100%;">
-        <div class="glass-card">
-            <h2 id="welcome-msg">Syncing...</h2>
-            <div id="subject-grid">
-               </div>
-            <button onclick="location.reload()" class="logout-btn">Logout / Reset</button>
-        </div>
+    <div id="welcome-mat">
+        <h1 id="welcome-text"></h1>
     </div>
 
     <script src="main.js"></script>
